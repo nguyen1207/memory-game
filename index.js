@@ -2,14 +2,12 @@ var model = {
     guessesCount: 0,
     selectedCells: [],
     
-    updateOrderCells: function(index) {
-        model.selectedCells.splice(index, 1);
+    updateCellsOrder: function(index) {
+        let numberOfSelectedCells = this.selectedCells.length;
 
-        let j = 0;
-        for(let i = model.selectedCells.length - 1; i >= index; i--) {
+        for(let i = numberOfSelectedCells - 1, j = 0; i >= index; i--, j++) {
             let cell = model.selectedCells[i];
             view.setNumber(cell, model.guessesCount - j);
-            j++;
         }
     }  
 
@@ -47,11 +45,9 @@ var controller = {
         }
         else {
             controller.deselectCell(cell);
-            let index = model.selectedCells.indexOf(cell);
-            model.updateOrderCells(index);
         }
     },
-
+    
     selectCell: function(cell) {
         cell.onmouseenter = undefined;
         cell.onmouseleave = undefined; 
@@ -59,11 +55,18 @@ var controller = {
         view.setNumber(cell);
         model.selectedCells.push(cell);
     },
-
+    
     deselectCell: function(cell) {
+        let index = model.selectedCells.indexOf(cell);
+
+        model.guessesCount--;
+        // Remove cell from array
+        model.selectedCells.splice(index, 1);
+        model.updateCellsOrder(index);
+
+        // Set deselected cell to default
         cell.onmouseenter = view.setRandomColor;
         cell.onmouseleave = view.setDefaultColor; 
-        model.guessesCount--;
         view.removeNumber(cell);
     }
 }
