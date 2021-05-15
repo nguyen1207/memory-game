@@ -47,23 +47,32 @@ var model = {
         for(let i = 0; i < model.numberOfCells; i++) {
             if(model.selectedCellIds[i] != model.cellIds[i]) {
                 view.displayTryAgain();
+                view.showAnswer();
                 return false;
             }
         }
+        view.showAnswer();
         view.displayTryAgain();
         return true;
     },
 
     reset: function() {
-        model.cellIds = [];
-
         for(let i = 0; i < model.selectedCellIds.length; i++) {
-            let cellId = model.selectedCellIds[i];
-            let cell = document.getElementById(cellId); 
-            view.setDefaultColor(cell);
-            view.removeNumber(cell);
+            let selectedCellId = model.selectedCellIds[i];
+            let selectedCell = document.getElementById(selectedCellId); 
+            view.setDefaultColor(selectedCell);
+            view.removeNumber(selectedCell);
+            
+            if(controller.mode == 1) {
+                let cellId = model.cellIds[i];
+                let cell = document.getElementById(cellId); 
+                
+                view.setDefaultColor(cell);
+                view.removeNumber(cell);
+            }
         }
-
+        
+        model.cellIds = [];
         model.selectedCellIds = [];
         model.selectedCount = 0;
     }
@@ -117,6 +126,24 @@ var view = {
         for(let cellId of cellIds) {
             let cell = document.getElementById(cellId);
             cell.style.backgroundColor = 'white';
+        }
+    },
+
+    showAnswer: function() {
+        for(let i = 0; i < model.numberOfCells; i++) {
+            let selectedCell = document.getElementById(model.selectedCellIds[i]);
+            let cell = document.getElementById(model.cellIds[i]); 
+
+            if(cell == selectedCell) {
+                selectedCell.style.backgroundColor = 'green';
+            }
+            else {
+                selectedCell.style.backgroundColor = 'red';
+                cell.style.backgroundColor = 'red';
+            }
+
+            cell.innerText += `[${i+1}]`
+            
         }
     },
 
@@ -222,20 +249,20 @@ window.onload = function() {
     controller.enableMouseInteract();
 
     startBtn.onclick = function() {
+        model.reset();
         controller.disableMouseInteract();
         controller.mode = 1;
         view.displayMode();
-        model.reset();
         model.generateCells();
         startBtn.style.display = 'none';
         tryAgainBtn.style.display = 'none';
     }
 
     tryAgainBtn.onclick = function() {
+        model.reset();
+        controller.enableMouseInteract();
         controller.mode = 0;
         view.displayMode();
-        controller.enableMouseInteract();
-        model.reset();
         startBtn.style.display = 'block';
         tryAgainBtn.style.display = 'none';
     }
