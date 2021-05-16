@@ -71,9 +71,11 @@ var model = {
             }
         }
         
-        model.cellIds = [];
         model.selectedCellIds = [];
         model.selectedCount = 0;
+        if(controller.mode == 2) {
+            model.cellIds = [];
+        }
     }
 }
 
@@ -190,14 +192,17 @@ var view = {
             case 0:
                 view.displayBtn('start', 1);
                 view.displayBtn('try-again', 0);
+                view.displayBtn('clear', 1);
                 break;
             case 1:
                 view.displayBtn('start', 0);
                 view.displayBtn('try-again', 0);
+                view.displayBtn('clear', 1);
                 break;
             case 2:
                 view.displayBtn('start', 0);
                 view.displayBtn('try-again', 1);
+                view.displayBtn('clear', 0);
                 break;
         }
     }
@@ -266,11 +271,17 @@ var controller = {
         }
     },
 
+    clearSelectedCell: function() {
+        model.reset();   
+        controller.enableMouseInteract();
+    }
+
 }
 
 window.onload = function() {
     let startBtn = document.getElementById('start');
     let tryAgainBtn = document.getElementById('try-again');
+    let clearBtn = document.getElementById('clear');
     
     view.displayMode();
     controller.enableMouseInteract();
@@ -288,6 +299,10 @@ window.onload = function() {
         controller.enableMouseInteract();
         controller.mode = 0;
         view.display(controller.mode);
+    }
+
+    clearBtn.onclick = function() {
+        controller.clearSelectedCell();        
     }
     
 }
