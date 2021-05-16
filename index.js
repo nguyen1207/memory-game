@@ -44,15 +44,14 @@ var model = {
 
     checkAnswer: function() {
         controller.disableMouseInteract();
+        controller.mode = 2;
+        view.display(controller.mode);
+        view.showAnswer();
         for(let i = 0; i < model.numberOfCells; i++) {
             if(model.selectedCellIds[i] != model.cellIds[i]) {
-                view.displayTryAgain();
-                view.showAnswer();
                 return false;
             }
         }
-        view.showAnswer();
-        view.displayTryAgain();
         return true;
     },
 
@@ -63,7 +62,7 @@ var model = {
             view.setDefaultColor(selectedCell);
             view.removeNumber(selectedCell);
             
-            if(controller.mode == 1) {
+            if(controller.mode == 2) {
                 let cellId = model.cellIds[i];
                 let cell = document.getElementById(cellId); 
                 
@@ -160,25 +159,53 @@ var view = {
         })
     },
 
-    displayTryAgain: function() {
-        let tryAgainBtn = document.getElementById('try-again');
-        tryAgainBtn.style.display = 'block';
-    },
+    displayBtn: function(btnId, status) {
+        let btn = document.getElementById(btnId);
+        if(status == 1) {
+            btn.style.display = 'block';
+        } 
+        else {
+            btn.style.display = 'none';
+        }
 
-    displayMode: function() {
+    }, 
+
+    displayMode: function(mode) {
         let modeElement = document.getElementById('mode');
-        if(controller.mode == 0) {
+        if(mode == 0) {
             modeElement.innerText = 'WARM UP';
         }
-        else {
+        else if(mode == 1) {
             modeElement.innerText = 'PLAY';
+        }
+        else {
+            modeElement.innerText = 'RESULT';
+        }
+    },
+    
+    display: function(mode) {
+        view.displayMode(mode);
+
+        switch(mode) {
+            case 0:
+                view.displayBtn('start', 1);
+                view.displayBtn('try-again', 0);
+                break;
+            case 1:
+                view.displayBtn('start', 0);
+                view.displayBtn('try-again', 0);
+                break;
+            case 2:
+                view.displayBtn('start', 0);
+                view.displayBtn('try-again', 1);
+                break;
         }
     }
 
 }
 
 var controller = {
-    // 0: warm up mode, 1: play mode
+    // 0: warm up mode, 1: play mode, 2: Result
     mode: 0,
 
     processGuess: function(e) {
@@ -252,19 +279,15 @@ window.onload = function() {
         model.reset();
         controller.disableMouseInteract();
         controller.mode = 1;
-        view.displayMode();
         model.generateCells();
-        startBtn.style.display = 'none';
-        tryAgainBtn.style.display = 'none';
+        view.display(controller.mode);
     }
 
     tryAgainBtn.onclick = function() {
         model.reset();
         controller.enableMouseInteract();
         controller.mode = 0;
-        view.displayMode();
-        startBtn.style.display = 'block';
-        tryAgainBtn.style.display = 'none';
+        view.display(controller.mode);
     }
     
 }
