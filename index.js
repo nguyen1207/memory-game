@@ -198,7 +198,7 @@ var view = {
         }
     },
     
-    display: function(mode) {
+    display: function(mode = 0) {
         view.displayMode(mode);
         view.displayLevel(model.currentLevel);
 
