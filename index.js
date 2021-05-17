@@ -12,7 +12,7 @@ var model = {
     speed: undefined,
 
     currentLevel: 1,
-    numberOfLevels: 10,
+    numberOfLevels: undefined,
     
     updateCellsOrder: function(index) {
         let numberOfSelectedCells = this.selectedCellIds.length;
@@ -261,24 +261,28 @@ var controller = {
                 model.baseNumberOfCells = 3;
                 model.speedIncrement = 0.5;
                 model.numberOfCellsIncrement = 1;
+                model.numberOfLevels = 10;
                 break;
             case 'medium':
                 model.baseSpeed = 1;
                 model.baseNumberOfCells = 4;
                 model.speedIncrement = 0.8;
                 model.numberOfCellsIncrement = 1;
+                model.numberOfLevels = 10;
                 break;
             case 'hard':
                 model.baseSpeed = 1.5;
                 model.baseNumberOfCells = 4;
                 model.speedIncrement = 1;
                 model.numberOfCellsIncrement = 1;
+                model.numberOfLevels = 15;
                 break;
             case 'insane':
                 model.baseSpeed = 1.8;
                 model.baseNumberOfCells = 4;
                 model.speedIncrement = 1.5;
                 model.numberOfCellsIncrement = 2;
+                model.numberOfLevels = 20;
                 break;
         }
         controller.start();
