@@ -99,16 +99,32 @@ button {
     background-color: rgb(43, 160, 43);
 }
 
+#easy:hover {
+    background-color: rgb(88, 231, 88);
+}
+
 #medium {
     background-color: rgb(61, 167, 216);
+}
+
+#medium:hover {
+    background-color: rgb(113, 193, 230);
 }
 
 #hard {
     background-color: red;
 }
 
+#hard:hover {
+    background-color: rgb(241, 113, 113);
+}
+
 #insane {
     background-color: purple;
+}
+
+#insane:hover {
+    background-color: rgb(207, 79, 207);
 }
 
 #controller {
@@ -132,16 +148,24 @@ button {
     background-color: rgb(71, 66, 67);
 }
 
+#clear:hover {
+    background-color: rgb(112, 103, 105);
+}
+
 #next {
     background-color: #2a8a85;
+}
+
+#next:hover {
+    background-color: #42cac3;
 }
 
 #try-again {
     background-color: rgb(99, 95, 95);
 }
 
-#controller:hover {
-    background-color: white;
+#try-again:hover {
+    background-color: rgb(134, 124, 124);
 }
 
 #next {
