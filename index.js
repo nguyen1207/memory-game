@@ -12,7 +12,7 @@ var model = {
     speed: undefined,
 
     currentLevel: 1,
-    numberOfLevels: 2,
+    numberOfLevels: 10,
     
     updateCellsOrder: function(index) {
         let numberOfSelectedCells = this.selectedCellIds.length;
