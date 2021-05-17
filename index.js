@@ -183,6 +183,16 @@ var view = {
         }
     },
 
+    displayDifficulty: function(difficulty) {
+        let difficultyElement = document.getElementById('difficulty');
+        difficultyElement.innerText = difficulty.toUpperCase();
+    },
+
+    displayMessage: function(message) {
+        let messageElement = document.getElementById('message');
+        messageElement.innerText = message;
+    },
+
     displayLevel: function(level) {
         let levelElement = document.getElementById('level');
         levelElement.innerText = `Level ${level}`;
@@ -204,7 +214,8 @@ var view = {
     display: function(mode = 0) {
         view.displayMode(mode);
         view.displayLevel(model.currentLevel);
-
+        view.displayDifficulty(controller.difficulty);
+    
         switch(mode) {
             case 0:
                 if(model.currentLevel == 1) {
@@ -234,10 +245,17 @@ var view = {
                 if(controller.levelSuccess && controller.isWin == false) {
                     view.displayBtn('next', 1);
                     view.displayBtn('try-again', 0);
+                    view.displayMessage('Level completed. Amazing good job :D');
+                }
+                else if(controller.isWin){
+                    view.displayBtn('next', 0);
+                    view.displayBtn('try-again', 1);
+                    view.displayMessage('You win. Play another game?');
                 }
                 else {
                     view.displayBtn('next', 0);
                     view.displayBtn('try-again', 1);
+                    view.displayMessage('You failed. Try again :(');
 
                 }
                 view.displayBtn('clear', 0);
@@ -252,6 +270,7 @@ var controller = {
     mode: 0,
     isWin: false,
     levelSuccess: false,
+    difficulty: '',
 
     instantiateLevel: function(difficulty) {
         console.log(difficulty);
@@ -262,6 +281,7 @@ var controller = {
                 model.speedIncrement = 0.5;
                 model.numberOfCellsIncrement = 1;
                 model.numberOfLevels = 10;
+                controller.difficulty = 'easy';
                 break;
             case 'medium':
                 model.baseSpeed = 1;
@@ -269,6 +289,7 @@ var controller = {
                 model.speedIncrement = 0.8;
                 model.numberOfCellsIncrement = 1;
                 model.numberOfLevels = 10;
+                controller.difficulty = 'medium';
                 break;
             case 'hard':
                 model.baseSpeed = 1.5;
@@ -276,6 +297,7 @@ var controller = {
                 model.speedIncrement = 1;
                 model.numberOfCellsIncrement = 1;
                 model.numberOfLevels = 15;
+                controller.difficulty = 'hard';
                 break;
             case 'insane':
                 model.baseSpeed = 1.8;
@@ -283,6 +305,7 @@ var controller = {
                 model.speedIncrement = 1.5;
                 model.numberOfCellsIncrement = 2;
                 model.numberOfLevels = 20;
+                controller.difficulty = 'insane';
                 break;
         }
         controller.start();
@@ -326,6 +349,7 @@ var controller = {
     
     resetGame: function() {
         controller.levelSuccess = false;
+        controller.difficulty = '';
         model.currentLevel = 1;
         model.speed = model.baseSpeed;
         model.numberOfCells = model.baseNumberOfCells;
@@ -416,6 +440,7 @@ window.onload = function() {
         controller.disableMouseInteract();
         controller.mode = 1;
         controller.levelUp();
+        messageElement.innerText = '';
         model.generateCells();
         view.display(controller.mode);
     }
@@ -426,11 +451,7 @@ window.onload = function() {
         controller.mode = 0;
         controller.resetGame();
         view.display(controller.mode);
-
-        if(controller.isWin) {
-            messageElement.innerText = '';
-        }
-
+        messageElement.innerText = '';
         controller.isWin = false;
     }
 
