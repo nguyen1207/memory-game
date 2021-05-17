@@ -5,15 +5,21 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
-    <title>Document</title>
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <title>Memory game</title>
 </head>
 <body>
-    <h1>Memory game</h1>  
-    <h3>Try to follow the color</h3>
-    <h4 id="message"></h4>
-    <h4 id="mode"></h4>
-    <h4 id="level"></h4>
-    <h2 id="difficulty"></h2>
+    <div id="header">
+        <h1 id="title">Memory game</h1>
+        <h3 id="description">Try to follow the color</h3>
+        <h4 id="message"></h4>
+        <div id="status">
+            <h4 id="level"></h4>
+            <h4 id="difficulty"></h4>
+            <h4 id="mode"></h4>
+        </div>
+    </div>
     <table id="board">
         <tr>
             <th id="00"></th>
@@ -51,13 +57,19 @@
             <th id="44"></th>
         </tr>
     </table>
-    <button class="start" id="easy">Easy</button>
-    <button class="start" id="medium">Medium</button>
-    <button class="start" id="hard">Hard</button>
-    <button class="start" id="insane">Insane</button>
-    <button id="clear">Clear</button>
-    <button id="next">Next level</button>
-    <button id="try-again">Try again</button>
+    <div id="footer">
+        <div id="controller">
+            <button id="clear">Clear</button>
+            <button id="next">Next level</button>
+            <button id="try-again">Try again</button>
+        </div>
+        <div id="difficulty-choices">
+            <button class="start" id="easy">Easy</button>
+            <button class="start" id="medium">Medium</button>
+            <button class="start" id="hard">Hard</button>
+            <button class="start" id="insane">Insane</button>
+        </div>
+    </div>
     <script src="index.js"></script>
 </body>
 </html>

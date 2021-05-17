@@ -46,7 +46,6 @@ var model = {
 
             this.cellIds.push(cellId); 
         }
-        console.log(this.cellIds);
         view.demonstrate(this.cellIds);
     },
 
@@ -127,8 +126,6 @@ var view = {
     demonstrate: function(cellIds) {
         // Wait until all cells are rendered
         this.renderCells(cellIds).then(function() {
-            console.log('done');
-
             // Hide cells and let user select cells after 1 second
             setTimeout(view.hide, 1000, cellIds);
             setTimeout(controller.enableMouseInteract, 1000);
@@ -176,7 +173,7 @@ var view = {
     displayBtn: function(btnId, status) {
         let btn = document.getElementById(btnId);
         if(status == 1) {
-            btn.style.display = 'block';
+            btn.style.display = 'inline';
         } 
         else {
             btn.style.display = 'none';
@@ -186,11 +183,33 @@ var view = {
     displayDifficulty: function(difficulty) {
         let difficultyElement = document.getElementById('difficulty');
         difficultyElement.innerText = difficulty.toUpperCase();
+        switch(difficulty) {
+            case 'easy':
+                difficultyElement.style.backgroundColor = 'rgb(43, 160, 43)';
+                break;
+            case 'medium':
+                difficultyElement.style.backgroundColor = 'rgb(61, 167, 216)';
+                break;
+            case 'hard':
+                difficultyElement.style.backgroundColor = 'red';
+                break;
+            case 'insane':
+                difficultyElement.style.backgroundColor = 'purple';
+                break;
+            default:
+                difficultyElement.style.backgroundColor = '#FDAC53';
+        }
     },
 
     displayMessage: function(message) {
         let messageElement = document.getElementById('message');
         messageElement.innerText = message;
+        if(controller.isWin || controller.levelSuccess) {
+            messageElement.style.color = 'green';
+        }
+        else {
+            messageElement.style.color = 'red';
+        }
     },
 
     displayLevel: function(level) {
@@ -273,7 +292,6 @@ var controller = {
     difficulty: '',
 
     instantiateLevel: function(difficulty) {
-        console.log(difficulty);
         switch(difficulty) {
             case 'easy':
                 model.baseSpeed = 1;
@@ -373,7 +391,6 @@ var controller = {
         model.selectedCount++;
         view.setNumber(cell);
         model.selectedCellIds.push(cell.id);
-        console.log(model.selectedCellIds);
     },
     
     deselectCell: function(cell) {
@@ -389,7 +406,6 @@ var controller = {
         cell.onmouseenter = view.setRandomColor;
         cell.onmouseleave = view.setDefaultColor; 
         view.removeNumber(cell);
-        console.log(model.selectedCellIds);
     },
 
 

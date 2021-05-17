@@ -1,3 +1,7 @@
+button {
+    font-family: 'Press Start 2P', cursive;
+}
+
 #board {
     margin-left: auto;
     margin-right: auto;
@@ -6,14 +10,138 @@
 #board th {
     width: 100px;
     height: 100px;
-    border-color: black;
+    border-color: rgb(0, 0, 0);
     border-style: solid;
-    border-width: 3px;
+    border-width: 2px;
+    border-radius: 10px;
+    font-family: 'Press Start 2P', cursive;
+    color: white;
+}
+
+#header {
+    text-align: center;
+}
+
+#title {
+    font-family: 'Press Start 2P', cursive;
+    color: rgb(145, 105, 45);
+}
+
+#description {
+    font-family: 'Press Start 2P', cursive;
+    color: rgb(243, 177, 77);
+}
+
+#message {
+    font-family: 'Press Start 2P', cursive;
+    font-size: 10px;
+    height: 12px;
+}
+
+#status{
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 10px;
+    font-family: 'Press Start 2P', cursive;
+    font-size: 12px;
+}
+
+#level {
+    width: 111px;
+    height: 50px;
+    line-height: 50px;
+    color: white;
+    background-color: #E9897E;
+    border-radius: 10px 0px 0px 10px;
+}
+
+#difficulty {
+    width: 320px;
+    height: 50px;
+    line-height: 50px;
+    background-color: #FDAC53;
+    color: white;
+}
+
+#mode {
+    width: 111px;
+    height: 50px;
+    line-height: 50px;
+    color: white;
+    background-color: #9BB7D4;
+    border-radius: 0px 10px 10px 0px;
+}
+
+#difficulty-choices {
+    width: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+}
+
+.start {
+    width: 100px;
+    height: 50px;
+    margin-left: 20px;
+    margin-right: 20px;
+    margin-top: 30px;
+    border: none;
+    color: white;
+    font-weight: bold;
+    font-size: 12px;
     border-radius: 10px;
 }
 
+#easy {
+    background-color: rgb(43, 160, 43);
+}
+
+#medium {
+    background-color: rgb(61, 167, 216);
+}
+
+#hard {
+    background-color: red;
+}
+
+#insane {
+    background-color: purple;
+}
+
+#controller {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#controller button {
+    width: 150px;
+    height: 40px;
+    margin-top: 20px;
+    border: none;
+    border-radius: 20px;
+    color: white;
+    font-weight: bold;
+    font-size: 12px;
+}
+
+#clear {
+    background-color: rgb(71, 66, 67);
+}
+
+#next {
+    background-color: #2a8a85;
+}
+
 #try-again {
-    display: none;
+    background-color: rgb(99, 95, 95);
+}
+
+#controller:hover {
+    background-color: white;
 }
 
 #next {
