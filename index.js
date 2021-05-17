@@ -2,15 +2,17 @@ var model = {
     selectedCount: 0,
     selectedCellIds: [],
 
-    baseSpeed: 1,
-    baseNumberOfCells: 3,
+    baseSpeed: undefined,
+    baseNumberOfCells: undefined,
+    speedIncrement: undefined,
+    numberOfCellsIncrement: undefined,
 
-    numberOfCells: 3,
+    numberOfCells: undefined,
     cellIds: [],
-    speed: 1,
+    speed: undefined,
 
     currentLevel: 1,
-    numberOfLevels: 10,
+    numberOfLevels: 2,
     
     updateCellsOrder: function(index) {
         let numberOfSelectedCells = this.selectedCellIds.length;
@@ -51,16 +53,17 @@ var model = {
     checkAnswer: function() {
         controller.disableMouseInteract();
         controller.mode = 2;
-        view.display(controller.mode);
         view.showAnswer();
+        controller.checkWin();
         for(let i = 0; i < model.numberOfCells; i++) {
             if(model.selectedCellIds[i] != model.cellIds[i]) {
-                controller.resetGame();
-                return false;
+                controller.levelSuccess = false;
+                view.display(controller.mode);
+                return;
             }
         }
-        controller.levelUp();
-        return true;
+        controller.levelSuccess = true;
+        view.display(controller.mode);
     },
 
     reset: function() {
@@ -204,18 +207,39 @@ var view = {
 
         switch(mode) {
             case 0:
-                view.displayBtn('start', 1);
+                if(model.currentLevel == 1) {
+                    view.displayBtn('easy', 1);
+                    view.displayBtn('medium', 1);
+                    view.displayBtn('hard', 1);
+                    view.displayBtn('insane', 1);
+                }
                 view.displayBtn('try-again', 0);
+                view.displayBtn('next', 0);
                 view.displayBtn('clear', 1);
                 break;
             case 1:
-                view.displayBtn('start', 0);
+                view.displayBtn('easy', 0);
+                view.displayBtn('medium', 0);
+                view.displayBtn('hard', 0);
+                view.displayBtn('insane', 0);
                 view.displayBtn('try-again', 0);
+                view.displayBtn('next', 0);
                 view.displayBtn('clear', 1);
                 break;
             case 2:
-                view.displayBtn('start', 0);
-                view.displayBtn('try-again', 1);
+                view.displayBtn('easy', 0);
+                view.displayBtn('medium', 0);
+                view.displayBtn('hard', 0);
+                view.displayBtn('insane', 0);
+                if(controller.levelSuccess && controller.isWin == false) {
+                    view.displayBtn('next', 1);
+                    view.displayBtn('try-again', 0);
+                }
+                else {
+                    view.displayBtn('next', 0);
+                    view.displayBtn('try-again', 1);
+
+                }
                 view.displayBtn('clear', 0);
                 break;
         }
@@ -227,6 +251,48 @@ var controller = {
     // 0: warm up mode, 1: play mode, 2: Result
     mode: 0,
     isWin: false,
+    levelSuccess: false,
+
+    instantiateLevel: function(difficulty) {
+        console.log(difficulty);
+        switch(difficulty) {
+            case 'easy':
+                model.baseSpeed = 1;
+                model.baseNumberOfCells = 3;
+                model.speedIncrement = 0.5;
+                model.numberOfCellsIncrement = 1;
+                break;
+            case 'medium':
+                model.baseSpeed = 1;
+                model.baseNumberOfCells = 4;
+                model.speedIncrement = 0.8;
+                model.numberOfCellsIncrement = 1;
+                break;
+            case 'hard':
+                model.baseSpeed = 1.5;
+                model.baseNumberOfCells = 4;
+                model.speedIncrement = 1;
+                model.numberOfCellsIncrement = 1;
+                break;
+            case 'insane':
+                model.baseSpeed = 1.8;
+                model.baseNumberOfCells = 4;
+                model.speedIncrement = 1.5;
+                model.numberOfCellsIncrement = 2;
+                break;
+        }
+        controller.start();
+    },
+
+    start: function() {
+        model.speed = model.baseSpeed;
+        model.numberOfCells = model.baseNumberOfCells; 
+        model.reset();
+        controller.disableMouseInteract();
+        controller.mode = 1;
+        model.generateCells();
+        view.display(controller.mode);
+    },
 
     processGuess: function(e) {
         let cell = e.target;
@@ -238,22 +304,24 @@ var controller = {
         }
 
         if(model.selectedCellIds.length == model.numberOfCells && controller.mode == 1) {
-            console.log(model.checkAnswer());
+            model.checkAnswer();
         }
     },
 
     levelUp: function() {
-        if(model.currentLevel == model.numberOfLevels) {
-            controller.resetGame();
-        }
-        else {
-            model.currentLevel++;    
-            controller.increaseSpeed(model.currentLevel);
-            controller.increaseNumberOfCells(model.currentLevel);
-        }
+        model.currentLevel++;    
+        controller.increaseSpeed(model.currentLevel);
+        controller.increaseNumberOfCells(model.currentLevel);
     },
 
+    checkWin: function() {
+        if(model.currentLevel == model.numberOfLevels) {
+            controller.isWin = true;
+        }
+    },
+    
     resetGame: function() {
+        controller.levelSuccess = false;
         model.currentLevel = 1;
         model.speed = model.baseSpeed;
         model.numberOfCells = model.baseNumberOfCells;
@@ -261,13 +329,13 @@ var controller = {
 
     increaseSpeed: function(level) {
         if(level % 3 == 0) {
-            model.speed += 0.5;
+            model.speed += model.speedIncrement;
         }
     },
 
     increaseNumberOfCells: function(level) {
         if(level % 4 == 0) {
-            model.numberOfCells += 1;
+            model.numberOfCells += model.numberOfCellsIncrement;
         }
     },
     
@@ -323,7 +391,8 @@ var controller = {
 }
 
 window.onload = function() {
-    let startBtn = document.getElementById('start');
+    let startBtns = document.getElementsByClassName('start');
+    let nextLevelBtn = document.getElementById('next');
     let tryAgainBtn = document.getElementById('try-again');
     let clearBtn = document.getElementById('clear');
     let messageElement = document.getElementById('message');
@@ -331,23 +400,34 @@ window.onload = function() {
     view.display();
     controller.enableMouseInteract();
 
-    startBtn.onclick = function() {
+    for(let startBtn of startBtns) {
+        startBtn.onclick = function() {
+            let difficulty = this.id;
+            controller.instantiateLevel(difficulty);
+        }
+    }
+
+    nextLevelBtn.onclick = function() {
         model.reset();
         controller.disableMouseInteract();
         controller.mode = 1;
+        controller.levelUp();
         model.generateCells();
         view.display(controller.mode);
     }
-
+    
     tryAgainBtn.onclick = function() {
         model.reset();
         controller.enableMouseInteract();
         controller.mode = 0;
+        controller.resetGame();
         view.display(controller.mode);
 
         if(controller.isWin) {
             messageElement.innerText = '';
         }
+
+        controller.isWin = false;
     }
 
     clearBtn.onclick = function() {
