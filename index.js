@@ -411,6 +411,8 @@ var controller = {
 
     disableMouseInteract: function() {
         let cells = document.getElementsByTagName('th');
+        let clearBtn = document.getElementById('clear');
+        clearBtn.disabled = true;
         for(let cell of cells) {
             cell.onmouseenter = undefined;
             cell.onmouseleave = undefined;
@@ -420,6 +422,8 @@ var controller = {
 
     enableMouseInteract: function() {
         let cells = document.getElementsByTagName('th');
+        let clearBtn = document.getElementById('clear');
+        clearBtn.disabled = false;
         for(let cell of cells) {
             cell.onmouseenter = view.setRandomColor;
             cell.onmouseleave = view.setDefaultColor;
