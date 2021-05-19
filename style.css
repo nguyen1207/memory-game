@@ -27,9 +27,89 @@ button {
     color: rgb(145, 105, 45);
 }
 
+#tutorial {
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 10px;
+    font-family: 'Press Start 2P', cursive;
+    font-size: 12px;
+}
+
+#tutorial div {
+    width: 111px;
+}
+
 #description {
     font-family: 'Press Start 2P', cursive;
+    font-size: 13px;
     color: rgb(243, 177, 77);
+}
+
+#details {
+    text-align: center;
+    width: 30px;
+    height: 30px;
+    font-size: 14px;
+    border: none;
+    border-radius: 30px;
+    background-color: black;
+    color: white;
+}
+
+#popup {
+    position: fixed;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -40%);
+    width: 1200px;
+    height: 630px;
+    padding: 20px;
+    background-color: white;
+    border: solid;
+    visibility: hidden;
+    opacity: 0;
+    transition: 0.5s;
+}
+
+#popup.active {
+    visibility: visible;
+    opacity: 1;
+    transition: 0.5s;
+}
+
+#popup p {
+    text-align: left;
+}
+
+#popup img {
+    margin-right: auto;
+    margin-left: auto;
+    display: block;
+    width: 1024px;
+    height: 600px;
+}
+    
+#popup button {
+    float: right;
+    border: none;
+    background-color: green; 
+    color: white;
+    width: 90px;
+    height: 30px;
+}
+
+#popup button:hover {
+    background-color: rgb(31, 204, 31);
+}
+
+#close-popup {
+    display: none;
+}
+
+#details:hover {
+    background-color: rgb(119, 118, 118);
 }
 
 #message {

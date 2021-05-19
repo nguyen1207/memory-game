@@ -441,16 +441,23 @@ window.onload = function() {
     let clearBtn = document.getElementById('clear');
     let messageElement = document.getElementById('message');
     
+    let detailsBtn = document.getElementById('details');
+    let nextTutorialBtn = document.getElementById('next-tutorial');
+    let closeBtn = document.getElementById('close-popup');
+    
+    let numberOfTutorials = 3;
+    let currentTutorial = 1;
+    
     view.display();
     controller.enableMouseInteract();
-
+    
     for(let startBtn of startBtns) {
         startBtn.onclick = function() {
             let difficulty = this.id;
             controller.instantiateLevel(difficulty);
         }
     }
-
+    
     nextLevelBtn.onclick = function() {
         model.reset();
         controller.disableMouseInteract();
@@ -470,9 +477,39 @@ window.onload = function() {
         messageElement.innerText = '';
         controller.isWin = false;
     }
-
+    
     clearBtn.onclick = function() {
         controller.clearSelectedCell();        
     }
     
+    detailsBtn.onclick = openPopup; 
+    closeBtn.onclick = closePopup;
+    
+    nextTutorialBtn.onclick = function() {
+        currentTutorial++;
+        let imgElement = document.getElementById('tutorial-image');
+        imgElement.src = `/tutorial images/tutorial${currentTutorial}.png`;
+
+        if(currentTutorial == numberOfTutorials) {
+            this.style.display = 'none';
+            closeBtn.style.display = 'block';
+        }
+    }
+    
+    function closePopup() {
+        let popup = document.getElementById('popup');
+        popup.classList.remove('active');
+    }
+    
+    function openPopup() {
+        let popup = document.getElementById('popup');
+        let imgElement = document.getElementById('tutorial-image');
+
+        currentTutorial = 1;
+        imgElement.src = `/tutorial images/tutorial${currentTutorial}.png`;
+        popup.classList.add('active');
+
+        nextTutorialBtn.style.display = 'block';
+        closeBtn.style.display = 'none';
+    }
 }
